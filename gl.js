@@ -12,40 +12,24 @@ var initGL = function (canvas) {
   return gl;
 };
 
-
-var compileGL = function(gl,node){
-  var shader = gl.createShader(gl.FRAGMENT_SHADER);
-  if(!node.src){
-    throw "Src empty. " + node;
-  }
-  gl.shaderSource(shader,"varying vec2 texCoord;" + node.src);
-  gl.compileShader(shader);
-  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    throw gl.getShaderInfoLog(shader);
-  }
-  return shader;
-};
-
-var initBuffers = function () {
+var initBuffer = function () {
   var positionBuffer;
   positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   vertices = [
-      // Front face
-      -1, -1,  0,
-       1, -1,  0,
-       1,  1,  0,
-      -1,  1,  0,
+      -1, -1,
+       1, -1,
+       1,  1,
+      -1,  1,
   ];
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-  positionBuffer.itemSize = 3;
+  positionBuffer.itemSize = 2;
   positionBuffer.numItems = 4;
   return positionBuffer;
 };
 
-var initTexture = function(gl,program,src) {
+var initTexture = function(gl,src) {
   var tex;
-  gl.useProgram(program);
   tex = gl.createTexture();
   tex.image = new Image();
   tex.image.onload = function () {
